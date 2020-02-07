@@ -2,5 +2,5 @@
 shit cat clone
 should compile with anything
 ```
-cc shat.c
+cc shat.c -o shat
 ```

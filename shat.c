@@ -1,24 +1,20 @@
+#include<limits.h>
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
 #include<unistd.h>
 
-#define PATH_MAX 100
-
-int check_num_args(int argc){
-    if (argc == 2){
-        return 0;
-    } else {
+void check_num_args(int argc){
+    if (argc != 2){
         printf("This util only takes one argument\n");
         exit(1);
     }
 }
 
 char *detect_path(char *argv[]){
-
     char cwd[PATH_MAX];
     char first_char = argv[1][0];
-
+    /* accept absolute path; spurn relative path */
     if (first_char == '/'){
         return argv[1];
     } else if (first_char == '.'){
@@ -32,7 +28,7 @@ char *detect_path(char *argv[]){
             exit(1);
         }
     }
-
+    /* if we got here, target file is in current directory */
     getcwd(cwd, sizeof(cwd));
     strcat(cwd, "/");
     return strcat(cwd, argv[1]);
@@ -41,24 +37,21 @@ char *detect_path(char *argv[]){
 int main(int argc, char *argv[]){
     char parse_char;
     FILE *to_read;
-
+    /* ascertain file path */
     check_num_args(argc);
-
     char *path = detect_path(argv);
-    printf("Reading file at %s\n\n", path);
+    /* open file */
     to_read = fopen(path, "r");
-
     if (to_read == NULL){
         printf("Cannot open file\n");
         exit(1);
     }
-
+    /* read it! */
     parse_char = fgetc(to_read);
     while (parse_char != EOF){
         printf("%c", parse_char);
         parse_char = fgetc(to_read);
     }
-
     fclose(to_read);
     return 0;
 }
