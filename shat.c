@@ -39,7 +39,8 @@ int main(int argc, char *argv[]){
     FILE *to_read;
     /* ascertain file path */
     check_num_args(argc);
-    char *path = detect_path(argv);
+    char *path = (char *)malloc(PATH_MAX);
+    strcpy(path, detect_path(argv));
     /* open file */
     to_read = fopen(path, "r");
     if (to_read == NULL){
@@ -52,6 +53,8 @@ int main(int argc, char *argv[]){
         printf("%c", parse_char);
         parse_char = fgetc(to_read);
     }
+    /* tidy up */
+    free(path);
     fclose(to_read);
     return 0;
 }
