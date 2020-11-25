@@ -3,6 +3,9 @@
 #include<stdlib.h>
 #include<string.h>
 #include<unistd.h>
+#ifdef MACOS
+#define PATH_MAX 4096
+#endif
 
 void check_num_args(int argc){
     if (argc != 2){
